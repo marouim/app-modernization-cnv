@@ -1,0 +1,14 @@
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: win2019-vs-dotnet-iis
+spec:
+  to:
+    kind: Service
+    name: win2019-vs-dotnet-iis
+    weight: 100
+  port:
+    targetPort: 8080
+  tls:
+    termination: edge
+  wildcardPolicy: None

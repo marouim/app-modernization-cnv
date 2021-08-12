@@ -8,6 +8,7 @@ spec:
     - protocol: TCP
       port: 3389
       targetPort: 3389
+      nodePort: 30221    ## Could by dynamic or documented somewhere
   type: NodePort
   selector:
     kubevirt.io/domain: win2019-vs-dotnet
