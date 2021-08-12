@@ -1,0 +1,14 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: win2019-vs-dotnet-rdp
+spec:
+  externalTrafficPolicy: Cluster
+  ports:
+    - protocol: TCP
+      port: 3389
+      targetPort: 3389
+  type: NodePort
+  selector:
+    kubevirt.io/domain: win2019-vs-dotnet
+    vm.kubevirt.io/name: win2019-vs-dotnet

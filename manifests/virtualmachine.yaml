@@ -1,0 +1,114 @@
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  annotations:
+    name.os.template.kubevirt.io/win2k19: Microsoft Windows Server 2019
+  name: win2019-vs-dotnet
+  namespace: integrations-virt
+  labels:
+    app: win2019-vs-dotnet
+    flavor.template.kubevirt.io/large: 'true'
+    os.template.kubevirt.io/win2k19: 'true'
+    vm.kubevirt.io/template: windows-2019-avec-visual-studio
+    vm.kubevirt.io/template.namespace: integrations-virt
+    vm.kubevirt.io/template.revision: '1'
+    vm.kubevirt.io/template.version: v0.14.0
+    workload.template.kubevirt.io/server: 'true'
+spec:
+  dataVolumeTemplates:
+    - metadata:
+        creationTimestamp: null
+        name: win2019-vs-dotnet-rootdisk
+      spec:
+        pvc:
+          accessModes:
+            - ReadWriteMany
+          resources:
+            requests:
+              storage: 50Gi
+          storageClassName: ocs-storagecluster-ceph-rbd
+          volumeMode: Block
+        source:
+          pvc:
+            name: win2k19-vs
+            namespace: integrations-virt
+  running: true
+  template:
+    metadata:
+      annotations:
+        vm.kubevirt.io/flavor: large
+        vm.kubevirt.io/os: windows2k19
+        vm.kubevirt.io/workload: server
+      creationTimestamp: null
+      labels:
+        flavor.template.kubevirt.io/large: 'true'
+        kubevirt.io/domain: win2019-vs-dotnet
+        kubevirt.io/size: large
+        os.template.kubevirt.io/win2k19: 'true'
+        vm.kubevirt.io/name: win2019-vs-dotnet
+        workload.template.kubevirt.io/server: 'true'
+    spec:
+      domain:
+        clock:
+          timer:
+            hpet:
+              present: false
+            hyperv: {}
+            pit:
+              tickPolicy: delay
+            rtc:
+              tickPolicy: catchup
+          utc: {}
+        cpu:
+          cores: 1
+          sockets: 2
+          threads: 1
+        devices:
+          disks:
+            - bootOrder: 1
+              disk:
+                bus: sata
+              name: rootdisk
+          inputs:
+            - bus: usb
+              name: tablet
+              type: tablet
+          interfaces:
+            - macAddress: '02:56:81:00:00:01'
+              masquerade: {}
+              model: virtio
+              name: nic-0
+        features:
+          acpi: {}
+          apic: {}
+          hyperv:
+            reenlightenment: {}
+            ipi: {}
+            synic: {}
+            synictimer:
+              direct: {}
+            spinlocks:
+              spinlocks: 8191
+            reset: {}
+            relaxed: {}
+            vpindex: {}
+            runtime: {}
+            tlbflush: {}
+            frequencies: {}
+            vapic: {}
+        machine:
+          type: pc-q35-rhel8.4.0
+        resources:
+          requests:
+            memory: 8Gi
+      evictionStrategy: LiveMigrate
+      hostname: win2019-vs-dotnet
+      networks:
+        - name: nic-0
+          pod: {}
+      terminationGracePeriodSeconds: 3600
+      volumes:
+        - dataVolume:
+            name: win2019-vs-dotnet-rootdisk
+          name: rootdisk
+
