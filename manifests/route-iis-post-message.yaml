@@ -1,0 +1,16 @@
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: post-message
+spec:
+  host: modern-ui.apps.openshift.rhcasalab.com
+  path: /api/sendmessage
+  to:
+    kind: Service
+    name: win2019-vs-dotnet-iis
+    weight: 100
+  port:
+    targetPort: 80
+  tls:
+    termination: edge
+  wildcardPolicy: None

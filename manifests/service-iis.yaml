@@ -6,7 +6,7 @@ spec:
   ports:
   - port: 80
     protocol: TCP
-    targetPort: 8080
+    targetPort: 80
   selector:
     kubevirt.io/domain: win2019-vs-dotnet
     vm.kubevirt.io/name: win2019-vs-dotnet
